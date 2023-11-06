@@ -21,10 +21,10 @@ jobs:
     name: Test secrets from environment
     runs-on: ubuntu-latest
     needs: extract-env
-    environment: ${{ secrets.ENV_PART }}
+    environment: $ENV_PART
     env:
       SECRET: ${{ secrets.SECRE }}  # Correct syntax for accessing a secret
-      ENV_PART: ${{ secrets.ENV_PART }}
+      ENV_PART: $ENV_PART
     steps:
       - name: Print SECRET
         run: |
