@@ -21,7 +21,6 @@ jobs:
   #       echo "##[set-output name=dev_part]${dev_part}"
   buildAndDeployClient:
     name: Test secrets from environment
-    needs: extract-dev
     runs-on: ubuntu-latest
     environment: ${github.ref##*-}
     env:
