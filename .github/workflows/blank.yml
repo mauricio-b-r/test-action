@@ -17,7 +17,6 @@ jobs:
         env_part="${version##*-}"
         echo "Env Part: $env_part"
         echo "ENV_PART=$env_part" >> $GITHUB_ENV
-        name: Use the value
     - name: print env_part
       run: |
         echo "env_part: $env_part"
