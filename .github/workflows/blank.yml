@@ -1,0 +1,37 @@
+name: Build & Deploy
+
+on:
+  push:
+    tags: 
+      - "[0-9]+.[0-9]+.[0-9]+-dev"
+      - "[0-9]+.[0-9]+.[0-9]+-prd"
+
+jobs:
+  set-tag-variable:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Extract last part of tag
+      id: extract-tag
+      run: |
+        tag=$GITHUB_REF
+        tag_name="${tag##*/}"
+        echo "Tag Name: $tag_name"
+        echo "##[set-output name=tag_name]${tag_name}"
+
+    - name: Set TAG_VARIABLE
+      run: |
+        tag_name="${{ steps.extract-tag.outputs.tag_name }}"
+        echo "Setting TAG_VARIABLE to $tag_name"
+        echo "TAG_VARIABLE=$tag_name" >> $GITHUB_ENV
+
+  buildAndDeployClient:
+    name: Test secrets from envirnoment
+    runs-on: ubuntu-latest
+    environment:
+      name: ${{ secrets.TAG_VARIABLE }}
+    steps:
+     - name: Print SECRE
+       env:
+         SEC: ${{ secrets.SECRE }}
+       run: |
+        echo KEY: '${SEC}'
