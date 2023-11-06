@@ -16,7 +16,7 @@ jobs:
         version=$GITHUB_REF_NAME
         env_part="${version##*-}"
         echo "Env Part: $env_part"
-        echo "##[set-output name=env_part]${env_part}"
+        echo "env_part={env_part}" >> $GITHUB_OUTPUT
   buildAndDeployClient:
     name: Test secrets from environment
     runs-on: ubuntu-latest
