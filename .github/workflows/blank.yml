@@ -13,7 +13,7 @@ jobs:
     - name: Extract 'env' part from GitHub Ref
       id: extract-env
       run: |
-        version=$GITHUB_REF_NAME
+        version=refs/head/0.0.0-dev
         env_part="${version##*-}"
         echo "Env Part: $env_part"
         echo "env_part={env_part}" >> $GITHUB_OUTPUT
@@ -24,7 +24,11 @@ jobs:
     environment: ${jobs.extract-env.outputs.env_part}}
     env:
       SECRET: ${{ secrets.SECRE }}  # Correct syntax for accessing a secret
+      ENV_PART: ${{ secrets.env_part }}
     steps:
       - name: Print SECRET
         run: |
           echo KEY: $SECRET
+          echo env_part: $ENV_PART
+
+        # version=$GITHUB_REF_NAME
