@@ -5,24 +5,23 @@ on:
     tags: 
       - "[0-9]+.[0-9]+.[0-9]+-dev"
       - "[0-9]+.[0-9]+.[0-9]+-prd"
-# env:
-#   MY_ENV: ${{ github.ref =~ "[0-9]+.[0-9]+.[0-9]+-prd" && 'prd' || github.ref =~ "[0-9]+.[0-9]+.[0-9]+-dev" && 'dev' || '' }}
 
 jobs:
-  # extract-dev:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #   - name: Extract 'dev' part from GitHub Ref
-  #     id: extract-dev
-  #     run: |
-  #       version=refs/head/0.0.1-prd
-  #       dev_part="${version##*-}"
-  #       echo "Dev Part: $dev_part"
-  #       echo "##[set-output name=dev_part]${dev_part}"
+  extract-env:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Extract 'env' part from GitHub Ref
+      id: extract-env
+      run: |
+        version=$GITHUB_REF_NAME
+        env_part="${version##*-}"
+        echo "Env Part: $env_part"
+        echo "##[set-output name=env_part]${env_part}"
   buildAndDeployClient:
     name: Test secrets from environment
     runs-on: ubuntu-latest
-    environment: ${GITHUB_REF_NAME##*-}
+    needs: extract-env
+    environment: ${jobs.extract-env.outputs.env_part}}
     env:
       SECRET: ${{ secrets.SECRE }}  # Correct syntax for accessing a secret
     steps:
