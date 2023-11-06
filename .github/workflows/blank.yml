@@ -7,14 +7,14 @@ on:
       - "[0-9]+.[0-9]+.[0-9]+-prd"
 
 jobs:
-  buildAndDeployClient:
+  testing:
     name: Test secrets from environment
     runs-on: ubuntu-latest
-    environment: ${GITHUB_REF_NAME##*-}
     env:
-      SECRET: ${{ secrets.SECRE }}  # Correct syntax for accessing a secret
+      ENVIRONMENT: ${{ github.ref_name##*- }}
+      SECRET: ${{ secrets.SECRE }}
     steps:
-      - name: Print SECRET
+      - name: Print SECRET and Environment
         run: |
-          echo KEY: $SECRET
-          echo ${GITHUB_REF_NAME##*-}
+          echo "SECRET: $SECRET"
+          echo "Environment: $ENVIRONMENT"
