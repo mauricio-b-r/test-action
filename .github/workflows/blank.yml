@@ -10,28 +10,25 @@ jobs:
   set-tag-variable:
     runs-on: ubuntu-latest
     steps:
-    - name: Extract last part of tag
-      id: extract-tag
-      run: |
-        tag=$GITHUB_REF
-        tag_name="${tag##*/}"
-        echo "Tag Name: $tag_name"
-        echo "##[set-output name=tag_name]${tag_name}"
-
-    - name: Set TAG_VARIABLE
-      run: |
-        tag_name="${{ steps.extract-tag.outputs.tag_name }}"
-        echo "Setting TAG_VARIABLE to $tag_name"
-        echo "TAG_VARIABLE=$tag_name" >> $GITHUB_ENV
+      - name: Extract last part of tag
+        id: extract-tag
+        run: |
+          tag=$GITHUB_REF
+          tag_name="${tag##*/}"
+          echo "Tag Name: $tag_name"
+          echo "##[set-output name=tag_name]${tag_name}"
 
   buildAndDeployClient:
-    name: Test secrets from envirnoment
+    name: Test secrets from environment
     runs-on: ubuntu-latest
     environment:
-      name: ${{ secrets.TAG_VARIABLE }}
+      name: ${{ steps.extract-tag.outputs.tag_name }}
+    env:
+      SECRET: ${{ secrets.SECRE }}  # Correct syntax for accessing a secret
     steps:
-     - name: Print SECRE
-       env:
-         SEC: ${{ secrets.SECRE }}
-       run: |
-        echo KEY: '${SEC}'
+      - name: Print SECRET
+        run: |
+          echo "Environment Name: ${{ steps.extract-tag.outputs.tag_name }}"
+      - name: Print SECRET
+        run: |
+          echo KEY: '$SECRET'
