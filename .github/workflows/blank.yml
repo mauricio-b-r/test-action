@@ -11,6 +11,7 @@ jobs:
     name: Test secrets from environment
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: true
       matrix:
         environment: [dev, prd]
     environment: ${{ matrix.environment }}
