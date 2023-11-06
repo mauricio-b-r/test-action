@@ -22,7 +22,7 @@ jobs:
   buildAndDeployClient:
     name: Test secrets from environment
     runs-on: ubuntu-latest
-    environment: ${github.ref##*-}
+    environment: ${GITHUB_REF_NAME##*-}
     env:
       SECRET: ${{ secrets.SECRE }}  # Correct syntax for accessing a secret
     steps:
