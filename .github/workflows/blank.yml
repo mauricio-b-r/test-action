@@ -11,8 +11,8 @@ jobs:
     name: Test secrets from environment
     runs-on: ubuntu-latest
     env:
-      ENVIRONMENT: ${GITHUB_REF_NAME##*-}
-      SECRET: ${{ secrets.SECRE }}
+      ENVIRONMENT: ${{ github.ref_name }}##*-
+      SECRET: ${secrets.SECRE }}
     steps:
       - name: Print SECRET and Environment
         run: |
