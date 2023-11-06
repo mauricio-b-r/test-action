@@ -9,6 +9,8 @@ on:
 jobs:
   extract-env:
     runs-on: ubuntu-latest
+    outputs:
+      output1: ${{ steps.extract-env.outputs.ENV_PART }}
     steps:
     - name: Extract 'env' part from GitHub Ref
       id: extract-env
@@ -16,16 +18,12 @@ jobs:
         version=$GITHUB_REF_NAME
         env_part="${version##*-}"
         echo "Env Part: $env_part"
-        echo "ENV_PART=$env_part" >> $GITHUB_ENV
-    - name: print env_part
-      run: |
-        echo "env_part: $env_part"
-        echo "ENV_PART: $ENV_PART"
+        echo "ENV_PART=$env_part" >> $GITHUB_OUTPUT
   buildAndDeployClient:
     name: Test secrets from environment
     runs-on: ubuntu-latest
     needs: extract-env
-    environment: $ENV_PART
+    environment: ${{needs.extract-env.outputs.output1}}
     env:
       SECRET: ${{ secrets.SECRE }}
     steps:
@@ -33,3 +31,4 @@ jobs:
         run: |
           echo "KEY: $SECRET"
           echo "env_part: $ENV_PART"
+          echo ${{needs.extract-env.outputs.output1}}
