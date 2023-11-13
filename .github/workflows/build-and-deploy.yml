@@ -7,6 +7,7 @@ env:
   BUILD_TARGET: Standalon
   LA: ${{ secrets.LALALA}}
   S: ${{ vars.SECRE }}
+  env: ${{secrets.ENV_PART}}
 
 jobs:
     buildAndDeploy:
@@ -30,4 +31,6 @@ jobs:
           run: echo "$SEC"
           env:
             SEC: ${{needs.extract-env-outputs.env_secrets}}
+        - name: aaa
+          run: echo "$env"
 
