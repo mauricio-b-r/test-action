@@ -5,6 +5,8 @@ on:
 
 env:
   BUILD_TARGET: Standalon
+  LA: ${{ secrets.LALALA}}
+  S: ${{ vars.SECRE }}
 
 jobs:
     buildAndDeploy:
