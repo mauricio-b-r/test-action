@@ -1,0 +1,20 @@
+name: Build & Deploy
+
+on:
+  workflow_call: {}
+
+env:
+  BUILD_TARGET: Standalon
+
+jobs:
+    buildAndDeploy:
+      name: Build & deploy
+      environment: ${{needs.extract-env.outputs.env_secrets}}
+      runs-on: ubuntu-latest
+      steps:  
+        - name: Echo
+          run: echo "This step will be skipped on Monday and Wednesday"
+        - name: Echo2
+          run: echo "$BUILD_TARGET"
+        - name: Echhooo
+          run: echo "${{needs.extract-env.outputs.env_secrets}}"
