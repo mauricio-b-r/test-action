@@ -5,28 +5,23 @@ on:
     tags: 
       - "[0-9]+.[0-9]+.[0-9]+-dev"
       - "[0-9]+.[0-9]+.[0-9]+-prd"
-# env:
-#   MY_ENV: ${{ github.ref =~ "[0-9]+.[0-9]+.[0-9]+-prd" && 'prd' || github.ref =~ "[0-9]+.[0-9]+.[0-9]+-dev" && 'dev' || '' }}
 
 jobs:
-  # extract-dev:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #   - name: Extract 'dev' part from GitHub Ref
-  #     id: extract-dev
-  #     run: |
-  #       version=refs/head/0.0.1-prd
-  #       dev_part="${version##*-}"
-  #       echo "Dev Part: $dev_part"
-  #       echo "##[set-output name=dev_part]${dev_part}"
-  buildAndDeployClient:
-    name: Test secrets from environment
-    needs: extract-dev
+  extract-env:
     runs-on: ubuntu-latest
-    environment: ${github.ref##*-}
-    env:
-      SECRET: ${{ secrets.SECRE }}  # Correct syntax for accessing a secret
+    outputs:
+      env_secrets: ${{ steps.extract-env.outputs.ENV_PART }}
     steps:
-      - name: Print SECRET
-        run: |
-          echo KEY: '$SECRET'
+    - name: Extract 'env' part from GitHub Ref
+      id: extract-env
+      run: |
+        version=$GITHUB_REF_NAME
+        env_part="${version##*-}"
+        echo "ENV_PART: $env_part"
+        echo "ENV_PART=$env_part-tag" >> $GITHUB_OUTPUT
+
+  buildAndDeploy:
+    name: Build & deploy
+    needs: extract-env
+    uses: ./.github/workflows/build-and-deploy.yml
+    secrets: inherit
