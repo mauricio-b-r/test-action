@@ -26,4 +26,4 @@ jobs:
     uses: ./.github/workflows/build-and-deploy.yml
     secrets: inherit
     with:
-      ENV_PART: ${{needs.extract-env.outputs.env_secrets}}
+      envir: ${{needs.extract-env.outputs.env_secrets}}
