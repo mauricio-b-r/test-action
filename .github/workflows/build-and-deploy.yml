@@ -15,12 +15,17 @@ jobs:
         - name: Echo secre
           run: echo "$SECRE"
         - name: Echo secre2
-          run: echo "$secrets.SECRE"
+          run: echo "${{secrets.SECRE}}"
         - name: Echo lala
           run: echo "$LALALA"
         - name: Echo lala2
-          run: echo "$secrets.LALALA"
+          run: echo "${secrets.LALALA}"
         - name: Echo2
           run: echo "$BUILD_TARGET"
         - name: Echhooo
-          run: echo "$needs.extract-env.outputs.env_secrets"
+          run: echo "${needs.extract-env.outputs.env_secrets}"
+        - name: Echhooo222
+          run: echo "$SEC"
+          env:
+            SEC: ${{needs.extract-env-outputs.env_secrets}}
+
