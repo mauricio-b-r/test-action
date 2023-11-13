@@ -13,7 +13,9 @@ jobs:
       runs-on: ubuntu-latest
       steps:  
         - name: Echo
-          run: echo "This step will be skipped on Monday and Wednesday"
+          run: |
+            - echo "$SECRE"
+            - echo "$LALALA"
         - name: Echo2
           run: echo "$BUILD_TARGET"
         - name: Echhooo
