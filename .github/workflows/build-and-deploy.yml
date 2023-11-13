@@ -1,7 +1,11 @@
 name: Build & Deploy
 
 on:
-  workflow_call: {}
+  workflow_call: 
+    inputs:
+      envir:
+        required: true
+        type: string
 
 env:
   BUILD_TARGET: Standalon
@@ -12,7 +16,7 @@ env:
 jobs:
     buildAndDeploy:
       name: Build & deploy
-      environment: ${{needs.extract-env.outputs.env_secrets}}
+      environment: ${{inputs.envir}}
       runs-on: ubuntu-latest
       steps:  
         - name: Echo secre
@@ -25,8 +29,8 @@ jobs:
           run: echo "${{secrets.LALALA}}"
         - name: Echo2
           run: echo "$BUILD_TARGET"
-        - name: Echhooo
-          run: echo "${{needs.extract-env.outputs.env_secrets}}"
+        - name: Echhooo envir
+          run: echo "${{inputs.envir}}"
         - name: Echhooo222
           run: echo "$SEC"
           env:
